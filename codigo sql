@@ -1,0 +1,124 @@
+-- MySQL Workbench Forward Engineering
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
+  `Nombre` VARCHAR(45) NULL,
+  `Tipo Usuario` VARCHAR(45) NULL,
+  PRIMARY KEY (`idUsuario`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Cliente`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Cliente` (
+  `idCliente` INT NOT NULL AUTO_INCREMENT,
+  `Nit` VARCHAR(10) NULL,
+  `Teléfono` VARCHAR(9) NULL,
+  `Dirección` VARCHAR(45) NULL,
+  `Tipo Cliente` VARCHAR(45) NULL,
+  PRIMARY KEY (`idCliente`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Factura`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Factura` (
+  `No_Factura` INT NOT NULL AUTO_INCREMENT,
+  `Fecha` DATE NULL,
+  `Bodega` VARCHAR(1) NULL,
+  `Detalle` VARCHAR(45) NULL,
+  `Facturacol` VARCHAR(45) NULL,
+  `Cliente_idCliente` INT NOT NULL,
+  `Usuario_idUsuario` INT NOT NULL,
+  PRIMARY KEY (`No_Factura`),
+  INDEX `fk_Factura_Cliente_idx` (`Cliente_idCliente` ASC) VISIBLE,
+  INDEX `fk_Factura_Usuario1_idx` (`Usuario_idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_Factura_Cliente`
+    FOREIGN KEY (`Cliente_idCliente`)
+    REFERENCES `mydb`.`Cliente` (`idCliente`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Factura_Usuario1`
+    FOREIGN KEY (`Usuario_idUsuario`)
+    REFERENCES `mydb`.`Usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Bodega`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Bodega` (
+  `idBodega` INT NOT NULL AUTO_INCREMENT,
+  `Encargado` VARCHAR(45) NULL,
+  `Descripción` VARCHAR(45) NULL,
+  PRIMARY KEY (`idBodega`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Producto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Producto` (
+  `idProducto` INT NOT NULL AUTO_INCREMENT,
+  `Descripción` VARCHAR(45) NULL,
+  `Linea` VARCHAR(10) NULL,
+  `Existencia` INT NULL,
+  `Precio` FLOAT NULL,
+  `Fecha Ingreso` DATE NULL,
+  `Bodega_idBodega` INT NOT NULL,
+  PRIMARY KEY (`idProducto`),
+  INDEX `fk_Producto_Bodega1_idx` (`Bodega_idBodega` ASC) VISIBLE,
+  CONSTRAINT `fk_Producto_Bodega1`
+    FOREIGN KEY (`Bodega_idBodega`)
+    REFERENCES `mydb`.`Bodega` (`idBodega`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Producto_has_Factura`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`Producto_has_Factura` (
+  `Producto_idProducto` INT NOT NULL,
+  `Factura_No_Factura` INT NOT NULL,
+  PRIMARY KEY (`Producto_idProducto`, `Factura_No_Factura`),
+  INDEX `fk_Producto_has_Factura_Factura1_idx` (`Factura_No_Factura` ASC) VISIBLE,
+  INDEX `fk_Producto_has_Factura_Producto1_idx` (`Producto_idProducto` ASC) VISIBLE,
+  CONSTRAINT `fk_Producto_has_Factura_Producto1`
+    FOREIGN KEY (`Producto_idProducto`)
+    REFERENCES `mydb`.`Producto` (`idProducto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Producto_has_Factura_Factura1`
+    FOREIGN KEY (`Factura_No_Factura`)
+    REFERENCES `mydb`.`Factura` (`No_Factura`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
