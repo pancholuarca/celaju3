@@ -96,9 +96,6 @@
               <Border info="null"/>
             </Property>
             <Property name="opaque" type="boolean" value="false"/>
-            <Property name="selectedTextColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
             <Property name="selectionEnd" type="int" value="0"/>
           </Properties>
           <Events>

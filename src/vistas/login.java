@@ -76,7 +76,6 @@ super.paintComponent(grafico);
         jTextField2.setText("Usuario");
         jTextField2.setBorder(null);
         jTextField2.setOpaque(false);
-        jTextField2.setSelectedTextColor(new java.awt.Color(255, 255, 255));
         jTextField2.setSelectionEnd(0);
         jTextField2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
